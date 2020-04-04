@@ -44,8 +44,6 @@ export default function Main({ navigation }) {
       setUsers(usersArr);
       setNewValue('');
 
-      console.tron.log(users);
-
       Keyboard.dismiss();
       setLoading(false);
     } catch (error) {
