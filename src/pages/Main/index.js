@@ -19,7 +19,7 @@ import {
   ProfileButtonText,
 } from './styles';
 
-export default function Main() {
+export default function Main({ navigation }) {
   const [users, setUsers] = useState([]);
   const [newValue, setNewValue] = useState();
   const [loading, setLoading] = useState(false);
@@ -53,6 +53,10 @@ export default function Main() {
     }
   };
 
+  handleNavigation = (user) => {
+    navigation.navigate('User', { user });
+  };
+
   return (
     <Container>
       <Form>
@@ -75,21 +79,23 @@ export default function Main() {
         </SubmitButton>
       </Form>
 
-      <List
-        data={users}
-        keyExtractor={(user) => user.login}
-        renderItem={({ item }) => (
-          <User>
-            <Avatar source={{ uri: item.avatar_url }} />
-            <Name>{item.name}</Name>
-            <Bio>{item.bio}</Bio>
+      {users && users.length > 0 ? (
+        <List
+          data={users}
+          keyExtractor={(user) => user.login}
+          renderItem={({ item }) => (
+            <User>
+              <Avatar source={{ uri: item.avatar_url }} />
+              <Name>{item.name}</Name>
+              <Bio>{item.bio}</Bio>
 
-            <ProfileButton onPress={() => {}}>
-              <ProfileButtonText>ver perfil</ProfileButtonText>
-            </ProfileButton>
-          </User>
-        )}
-      />
+              <ProfileButton onPress={() => handleNavigation(item)}>
+                <ProfileButtonText>ver perfil</ProfileButtonText>
+              </ProfileButton>
+            </User>
+          )}
+        />
+      ) : null}
     </Container>
   );
 }

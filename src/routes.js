@@ -1,9 +1,10 @@
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Main from './pages/Main';
+import User from './pages/User';
 
 const Stack = createStackNavigator();
 
@@ -21,10 +22,11 @@ function Routes() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Usuários"
+          name="Main"
           component={Main}
           options={screenOptions}
         />
+        <Stack.Screen name="User" component={User} options={screenOptions} />
       </Stack.Navigator>
     </NavigationContainer>
   );
