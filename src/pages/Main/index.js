@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, ActivityIndicator } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -22,28 +22,35 @@ import {
 export default function Main() {
   const [users, setUsers] = useState([]);
   const [newValue, setNewValue] = useState();
+  const [loading, setLoading] = useState(false);
 
   handleAddUser = async () => {
-    const response = await api.get(`/users/${newValue}`);
+    try {
+      setLoading(true);
+      const response = await api.get(`/users/${newValue}`);
 
-    const { name, login, bio, avatar_url } = response.data;
+      const { name, login, bio, avatar_url } = response.data;
 
-    const usersArr = [
-      ...users,
-      {
-        name,
-        login,
-        bio,
-        avatar_url,
-      },
-    ];
+      const usersArr = [
+        ...users,
+        {
+          name,
+          login,
+          bio,
+          avatar_url,
+        },
+      ];
 
-    setUsers(usersArr);
-    setNewValue('');
+      setUsers(usersArr);
+      setNewValue('');
 
-    console.tron.log(users);
+      console.tron.log(users);
 
-    Keyboard.dismiss();
+      Keyboard.dismiss();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,8 +66,12 @@ export default function Main() {
           onSubmitEditing={handleAddUser}
         />
 
-        <SubmitButton onPress={() => handleAddUser()}>
-          <Icon name="add" size={20} color="#fff" />
+        <SubmitButton loading={loading} onPress={() => handleAddUser()}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Icon name="add" size={20} color="#fff" />
+          )}
         </SubmitButton>
       </Form>
 
